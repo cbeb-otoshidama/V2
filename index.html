@@ -160,6 +160,10 @@
           
           const data = await response.json();
           
+          // くじがない場合、結果テキストを変更
+          if (data.remaining === 0) {
+            resultText.textContent = "くじがありません";
+          } else {
           // 結果テキストに【】で囲んだ結果を表示
           resultText.textContent = "＼ " + data.result + " ／"; // 結果を【】で囲む
           resultText.style.display = "block"; // 結果テキストを表示
