@@ -4,40 +4,62 @@
   <meta charset="UTF-8">
   <title>COMBRIDGE&EB お年玉くじ</title>
   <style>
+    /* 背景 */
     body {
       text-align: center;
       font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-      background: #ffffff;
+      background: linear-gradient(to bottom, #fff5f5, #ffe6cc); /* 赤～金のグラデ */
       padding: 30px;
     }
 
+    /* タイトル */
     h2 {
-      color: #1c1c1c;
-      font-size: 40px;
-      margin-bottom: 10px;
+      color: #d00000; /* お正月らしい赤 */
+      font-size: 44px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px #ffd700; /* 金色の影で豪華感 */
     }
 
+    /* 入力欄 */
     input {
       width: 250px;
       padding: 10px;
       margin: 8px;
       border-radius: 10px;
-      border: 2px solid #7f7f7f;
+      border: 2px solid #d00000; /* 赤い枠 */
       font-size: 16px;
       outline: none;
     }
     input:focus {
-      border-color: #1c1c1c;
-      background: #fafafa;
+      border-color: #ffd700; /* ゴールドに光る */
+      background: #fff8e7;
+    }
+
+    /* ボタン */
+    button {
+      background: linear-gradient(to bottom, #d00000, #ff6666); /* 赤のグラデーション */
+      color: #fffde7; /* ゴールドっぽい文字 */
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px #dcdcdc;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(to bottom, #ff6666, #d00000);
+      transform: scale(1.05);
     }
 
     /* 結果テキスト */
     #resultText {
-      font-size: 40px;
-      color: #1c1c1c;
+      font-size: 42px;
+      color: #d00000; /* 赤文字 */
       font-weight: bold;
-      margin-bottom: 20px; /* くじ箱との間隔 */
-      display: none; /* 初期状態は非表示 */
+      margin-bottom: 20px;
+      display: none; /* 初期非表示 */
+      text-shadow: 1px 1px #ffd700; /* 金色の影 */
     }
 
     /* くじ箱 */
@@ -75,24 +97,6 @@
       90% { transform: rotate(2deg); }
       100% { transform: rotate(0deg); }
     }
-
-    /* ボタン */
-    button {
-      background: #1c1c1c;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px #dcdcdc;
-      transition: 0.2s;
-    }
-    button:hover {
-      background: #1c1c1c;
-      transform: scale(1.05);
-    }
-
   </style>
 </head>
 <body>
@@ -123,19 +127,19 @@
         return;
       }
 
-      // 名前、メール、ボタンを非表示
+      // 名前・メール・ボタンを非表示
       document.getElementById("name").style.display = "none";
       document.getElementById("email").style.display = "none";
       document.getElementById("drawButton").style.display = "none";
 
       const box = document.getElementById("box");
       const resultText = document.getElementById("resultText");
-      resultText.style.display = "none"; // 隠す
+      resultText.style.display = "none";
 
       // くじ箱を揺らす
       box.classList.add("shake");
 
-      // アニメーション終了を待つ
+      // アニメーション終了を待機
       await new Promise(resolve => {
         box.addEventListener("animationend", function handler() {
           box.classList.remove("shake");
