@@ -4,131 +4,119 @@
 		<meta charset="UTF-8">
 		<title>くじ引き</title>
 		<style>
-  body {
-    text-align: center;
-    font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-    background: #fff5fb;
-    padding: 30px;
-  }
+			body {
+				text-align: center;
+				font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
+				background: #fff5fb;
+				padding: 30px;
+			}
 
-  h2 {
-    color: #ff66a5;
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
+			h2 {
+				color: #ff66a5;
+				font-size: 32px;
+				margin-bottom: 10px;
+			}
 
-  input {
-    width: 250px;
-    padding: 10px;
-    margin: 8px;
-    border-radius: 10px;
-    border: 2px solid #ffbad2;
-    font-size: 16px;
-    outline: none;
-  }
-  input:focus {
-    border-color: #ff66a5;
-    background: #fff0f6;
-  }
+			input {
+				width: 250px;
+				padding: 10px;
+				margin: 8px;
+				border-radius: 10px;
+				border: 2px solid #ffbad2;
+				font-size: 16px;
+				outline: none;
+			}
+			input:focus {
+				border-color: #ff66a5;
+				background: #fff0f6;
+			}
 
-  /* くじ箱 */
-  #box {
-    width: 150px; /* 幅を変更（任意） */
-    height: 150px; /* 高さを変更（任意） */
-    margin: 20px auto; /* 余白の調整 */
-    position: relative;
-  }
+			/* くじ箱 */
+			#box {
+				width: 150px; /* 幅を変更 */
+				height: 150px; /* 高さを変更 */
+				margin: 20px auto; /* 余白を調整、中央揃え */
+				position: relative;
+			}
 
-  .box-icon {
-  width: 100%; /* 画像の幅を100%にして、くじ箱にフィットさせる */
-  position: absolute;
-  top: 0; /* 上端に合わせる */
-  left: 0; /* 左端に合わせる */
-  border-radius: 15px; /* 角を丸くする（任意） */
-}
+			/* くじ箱の画像 */
+			.box-icon {
+				width: 100%; /* 画像がボックス内にフィット */
+				height: 100%;
+				object-fit: contain; /* 画像の歪みを防ぐ */
+				border-radius: 15px; /* 画像の角を丸くする（任意） */
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
 
-  /* くじ箱アニメーション */
-  .shake {
-    animation: shake 0.5s infinite;
-  }
-  @keyframes shake {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(2deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-2deg); }
-    100% { transform: rotate(0deg); }
-  }
+			/* くじ箱アニメーション */
+			.shake {
+				animation: shake 0.5s infinite;
+			}
+			@keyframes shake {
+				0% { transform: rotate(0deg); }
+				25% { transform: rotate(2deg); }
+				50% { transform: rotate(0deg); }
+				75% { transform: rotate(-2deg); }
+				100% { transform: rotate(0deg); }
+			}
 
-  /* ボタン */
-  button {
-    background: #ff66a5;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255,102,165,0.3);
-    transition: 0.2s;
-  }
-  button:hover {
-    background: #ff85b8;
-    transform: scale(1.05);
-  }
+			/* ボタン */
+			button {
+				background: #ff66a5;
+				color: white;
+				border: none;
+				padding: 12px 25px;
+				border-radius: 30px;
+				font-size: 16px;
+				cursor: pointer;
+				box-shadow: 0 4px 10px rgba(255,102,165,0.3);
+				transition: 0.2s;
+			}
+			button:hover {
+				background: #ff85b8;
+				transform: scale(1.05);
+			}
 
-  #remaining {
-    font-size: 18px;
-    margin-top: 15px;
-    color: #ff4f92;
-  }
+			#remaining {
+				font-size: 18px;
+				margin-top: 15px;
+				color: #ff4f92;
+			}
 
-  /* 結果画像のふわっとアニメ */
- 　#resultImage {
- 　  width: 220px;
- 　  display: none;
- 　  opacity: 0;
-  　 transition: opacity 0.8s;
- 　  margin-top: 30px; /* ボタンの下に少し余白を加える */
-　}
+			/* 結果画像のふわっとアニメ */
+			#resultImage {
+				width: 220px;
+				display: block; /* ブロック要素として表示 */
+				opacity: 0;
+				transition: opacity 0.8s;
+				margin-top: 30px; /* ボタンとくじ箱の間にスペースを加える */
+				margin-left: auto;
+				margin-right: auto; /* 左右中央揃え */
+			}
 
- 　#resultImage.show {
-　   opacity: 1;
-　}
-
-　.box-icon {
-  width: 90px;
-  position: absolute;
-  top: -45px;
-  left: 35px;
-　}
-
-</style>
-
+			#resultImage.show {
+				opacity: 1;
+			}
+		</style>
 	</head>
 	<body>
-		
 		<h2>くじ引き</h2>
-		
 		<input id="name" type="text" placeholder="名前"><br><br>
 		<input id="email" type="email" placeholder="メールアドレス"><br><br>
-		
 		<button onclick="draw()">くじを引く</button>
-
-　　　　　<!-- 結果画像の部分をくじ箱の上に移動 -->
-　　　　　<img id="resultImage">
-　　　　　<div id="box">
- 　　　  　　　<img src="box_icon.png" class="box-icon">
-　　　　　</div>
-
-		<!-- くじ箱の部分 -->
-        <div id="box">
-          <img src="box_icon.png" class="box-icon">
-        </div>
-
 		
+		<!-- 結果画像 -->
+		<img id="resultImage">
+		
+		<!-- くじ箱の部分 -->
+		<div id="box">
+			<img src="box_icon.png" class="box-icon">
+		</div>
+
 		<p id="remaining"></p>
 
-		
 		<script>
 			const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
 			
@@ -151,15 +139,10 @@
 				await new Promise(r => setTimeout(r, 1000));
 				
 				box.classList.remove("shake");
-
-				// 結果画像を表示
-                img.src = data.image;
-                img.style.display = "block";
-                img.classList.add("show");
 				
 				const response = await fetch(API_URL, {
-						method: "POST",
-						body: JSON.stringify({ name, email })
+					method: "POST",
+					body: JSON.stringify({ name, email })
 				});
 				
 				const data = await response.json();
@@ -172,6 +155,5 @@
 				"残り：" + data.remaining + "個";
 			}
 		</script>
-		
 	</body>
 </html>
