@@ -70,6 +70,18 @@
       text-shadow: 1px 1px #ffd700;
     }
 
+    /* 結果テキストの跳ねるアニメーション */
+    .bounce {
+      animation: bounce 0.8s ease;
+    }
+
+    @keyframes bounce {
+      0%   { transform: scale(0.6); opacity: 0; }
+      50%  { transform: scale(1.2); opacity: 1; }
+      70%  { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
     /* 結果（大きめ） */
     .result-main {
       font-size: 48px;
@@ -190,7 +202,15 @@
     　　　　"<span class='result-prize'>" + data.prize + "</span>";
 　　　　}
 
-        resultText.style.display = "block";
+      resultText.style.display = "block";
+      
+      // アニメーション用に一度クラスを消して付け直す
+      resultText.classList.remove("bounce");
+      void resultText.offsetWidth; // ←強制再描画でアニメーションをリセット
+      resultText.classList.add("bounce");
+
+      resultText.style.display = "block";
+
       }
   </script>
 
