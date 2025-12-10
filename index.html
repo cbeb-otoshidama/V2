@@ -192,15 +192,22 @@
       const data = await response.json();
 
       // 結果テキスト表示
-      if (data.remaining === 0) {
-  　　　　resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
-　　　　} else {
+      if (data.result === "参加済み") {
+        resultText.innerHTML =
+          "<span class='result-main'>すでに参加済みです</span>";
+      }
 
-　　　　  resultText.innerHTML =
-    　　　　"<span class='result-main'>＼ " + data.result + " ／</span>" +
-    　　　　"<br>" +
-    　　　　"<span class='result-prize'>" + data.prize + "</span>";
-　　　　}
+      else if (data.remaining === 0) {
+        resultText.innerHTML =
+          "<span class='result-main'>くじがありません</span>";
+      }
+
+      else {
+        resultText.innerHTML =
+          "<span class='result-main'>＼ " + data.result + " ／</span>" +
+          "<br>" +
+          "<span class='result-prize'>" + data.prize + "</span>";
+      }
 
       resultText.style.display = "block";
       
