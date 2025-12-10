@@ -4,33 +4,100 @@
 		<meta charset="UTF-8">
 		<title>くじ引き</title>
 		<style>
-			body { text-align: center; font-family: sans-serif; }
-			
-			#box {
-				width: 150px;
-				height: 150px;
-				margin: 20px auto;
-				background: #d33;
-				border-radius: 10px;
-				position: relative;
-			}
-			/* アニメーション */
-			.shake {
-				animation: shake 0.5s infinite;
-			}
-			@keyframes shake {
-				0% { transform: rotate(0deg); }
-				25% { transform: rotate(3deg); }
-				50% { transform: rotate(0deg); }
-				75% { transform: rotate(-3deg); }
-				100% { transform: rotate(0deg); }
-			}
-			
-			#resultImage {
-				width: 200px;
-				display: none;
-			}
-		</style>
+  body {
+    text-align: center;
+    font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
+    background: #fff5fb;
+    padding: 30px;
+  }
+
+  h2 {
+    color: #ff66a5;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 250px;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 10px;
+    border: 2px solid #ffbad2;
+    font-size: 16px;
+    outline: none;
+  }
+  input:focus {
+    border-color: #ff66a5;
+    background: #fff0f6;
+  }
+
+  /* くじ箱 */
+  #box {
+    width: 160px;
+    height: 160px;
+    margin: 25px auto;
+    background: linear-gradient(135deg, #ff99c8, #ff66a5);
+    border-radius: 20px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  /* くじ箱アニメーション */
+  .shake {
+    animation: shake 0.5s infinite;
+  }
+  @keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  /* ボタン */
+  button {
+    background: #ff66a5;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255,102,165,0.3);
+    transition: 0.2s;
+  }
+  button:hover {
+    background: #ff85b8;
+    transform: scale(1.05);
+  }
+
+  #remaining {
+    font-size: 18px;
+    margin-top: 15px;
+    color: #ff4f92;
+  }
+
+  /* 結果画像のふわっとアニメ */
+  #resultImage {
+    width: 220px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.8s;
+    margin-top: 10px;
+  }
+  #resultImage.show {
+    opacity: 1;
+  }
+
+　.box-icon {
+  width: 90px;
+  position: absolute;
+  top: -45px;
+  left: 35px;
+　}
+
+</style>
+
 	</head>
 	<body>
 		
@@ -41,7 +108,9 @@
 		
 		<button onclick="draw()">くじを引く</button>
 		
-		<div id="box"></div>
+		<div id="box">
+　　　　　  <img src="box_icon.png" class="box-icon">
+　　　　　</div>
 		
 		<p id="remaining"></p>
 		
@@ -79,6 +148,7 @@
 				
 				img.src = data.image;
 				img.style.display = "block";
+				img.classList.add("show");
 				
 				document.getElementById("remaining").innerText =
 				"残り：" + data.remaining + "個";
