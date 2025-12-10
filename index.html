@@ -50,15 +50,21 @@
         left: 0;
       }
 
-      /* くじ箱アニメーション */
+       /* くじ箱アニメーション */
       .shake {
-        animation: shake 3s ease-out;
+        animation: shake 3s ease-in-out; /* アニメーション時間を3秒に変更 */
       }
       @keyframes shake {
         0% { transform: rotate(0deg); }
-        25% { transform: rotate(2deg); }
-        50% { transform: rotate(0deg); }
-        75% { transform: rotate(-2deg); }
+        10% { transform: rotate(10deg); }
+        20% { transform: rotate(-10deg); }
+        30% { transform: rotate(10deg); }
+        40% { transform: rotate(-10deg); }
+        50% { transform: rotate(5deg); }
+        60% { transform: rotate(-5deg); }
+        70% { transform: rotate(5deg); }
+        80% { transform: rotate(-5deg); }
+        90% { transform: rotate(2deg); }
         100% { transform: rotate(0deg); }
       }
 
