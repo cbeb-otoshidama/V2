@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>オリジナルくじ引き</title>
+    <title>COMBRIDGE&EB お年玉くじ</title>
     <style>
       body {
         text-align: center;
@@ -98,7 +98,9 @@
     </style>
   </head>
   <body>
-    <h2>オリジナルくじ引き</h2>
+    <h2>COMBRIDGE&EB
+    <br>お年玉くじ
+    </h2>
     <input id="name" type="text" placeholder="名前"><br><br>
     <input id="email" type="email" placeholder="メールアドレス"><br><br>
     <button onclick="draw()">くじを引く</button>
@@ -132,7 +134,7 @@
         box.classList.add("shake");
         
         // 1秒揺れる
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 500));
         
         box.classList.remove("shake");
         
