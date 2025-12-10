@@ -22,11 +22,12 @@
 
     /* タイトル */
     h2 {
-      color: #d00000; /* 赤文字 */
-      font-size: 44px;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px #ffd700; /* 金色の影 */
-    }
+  　　　font-size: 48px;
+  　　　font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
+  　　　color: #d00000; /* 赤文字 */
+  　　　text-shadow: 3px 3px #ffd700; /* 金色の影でおめでた感 */
+  　　　margin-bottom: 20px;
+　　　}
 
     /* 入力欄 */
     input {
@@ -166,9 +167,9 @@
 
       // 結果テキスト表示
       if (data.remaining === 0) {
-        resultText.textContent = "くじがありません";
+        resultText.textContent = "＼ くじがありません ／";
       } else {
-        resultText.textContent = "【" + data.result + "】";
+        resultText.textContent = "＼ " + data.result + " ／";
       }
       resultText.style.display = "block";
     }
