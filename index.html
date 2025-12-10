@@ -33,18 +33,19 @@
 
   /* くじ箱 */
   #box {
-    width: 30px; /* 幅を変更（任意） */
-    height: 30px; /* 高さを変更（任意） */
-    margin: 100px auto; /* 余白の調整 */
+    width: 150px; /* 幅を変更（任意） */
+    height: 150px; /* 高さを変更（任意） */
+    margin: 20px auto; /* 余白の調整 */
     position: relative;
   }
 
-  .box-image {
-    width: 100%; /* 画像がボックス内にフィット */
-    height: 100%;
-    object-fit: contain; /* 画像の歪みを防ぐ */
-    border-radius: 15px; /* 画像の角を丸くする（任意） */
-  }
+  .box-icon {
+  width: 100%; /* 画像の幅を100%にして、くじ箱にフィットさせる */
+  position: absolute;
+  top: 0; /* 上端に合わせる */
+  left: 0; /* 左端に合わせる */
+  border-radius: 15px; /* 角を丸くする（任意） */
+}
 
   /* くじ箱アニメーション */
   .shake {
