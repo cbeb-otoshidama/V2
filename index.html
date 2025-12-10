@@ -132,7 +132,7 @@
           alert("名前とメールアドレスを入力してください。");
           return;
         }
-
+        
         // 名前、メールアドレス入力欄、くじを引くボタンを非表示にする
         document.getElementById("name").style.display = "none";
         document.getElementById("email").style.display = "none";
@@ -146,7 +146,8 @@
         
         // アニメーション終了時に結果を表示
         box.addEventListener("animationend", async function() {
-          box.classList.remove("shake"); // アニメーション終了後にクラスを削除
+        box.classList.remove("shake"); // アニメーション終了後にクラスを削除
+          
           
           // API呼び出し
           const response = await fetch(API_URL, {
