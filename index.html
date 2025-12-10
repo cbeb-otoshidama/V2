@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>COMBRIDGE&EB お年玉くじ</title>
+    <title>オリジナルくじ引き</title>
     <style>
       body {
         text-align: center;
@@ -33,8 +33,8 @@
 
       /* くじ箱 */
       #box {
-        width: 300px;
-        height: 300px;
+        width: 150px;
+        height: 150px;
         margin: 20px auto;
         position: relative;
       }
@@ -52,7 +52,7 @@
 
       /* くじ箱アニメーション */
       .shake {
-        animation: shake 0.5s infinite;
+        animation: shake 0.5s ease-out;
       }
       @keyframes shake {
         0% { transform: rotate(0deg); }
@@ -98,9 +98,7 @@
     </style>
   </head>
   <body>
-    <h2>COMBRIDGE&EB
-    <br>お年玉くじ
-    </h2>
+    <h2>オリジナルくじ引き</h2>
     <input id="name" type="text" placeholder="名前"><br><br>
     <input id="email" type="email" placeholder="メールアドレス"><br><br>
     <button onclick="draw()">くじを引く</button>
@@ -133,24 +131,22 @@
         
         box.classList.add("shake");
         
-        // 1秒揺れる
-        await new Promise(r => setTimeout(r, 50));
-        
-        box.classList.remove("shake");
-        
-        const response = await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({ name, email })
+        // アニメーション終了時に結果を表示
+        box.addEventListener("animationend", async function() {
+          box.classList.remove("shake"); // アニメーション終了後にクラスを削除
+          
+          // API呼び出し
+          const response = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({ name, email })
+          });
+          
+          const data = await response.json();
+          
+          // 結果テキストに【】で囲んだ結果を表示
+          resultText.textContent = "【" + data.result + "】"; // 結果を【】で囲む
+          resultText.style.display = "block"; // 結果テキストを表示
         });
-        
-        const data = await response.json();
-        
-        // 結果テキストに【】で囲んだ結果を表示
-        resultText.textContent = "【" + data.result + "】"; // 結果を【】で囲む
-        resultText.style.display = "block"; // 結果テキストを表示
-        
-        // 残りくじ数の表示を非表示にする
-        document.getElementById("remaining").style.display = "none";  // 非表示にする
       }
     </script>
   </body>
