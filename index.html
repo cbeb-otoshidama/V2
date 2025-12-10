@@ -1,174 +1,166 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <title>COMBRIDGE&EB お年玉くじ</title>
-    <style>
-      body {
-        text-align: center;
-        font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-        background: #ffffff;
-        padding: 30px;
+<head>
+  <meta charset="UTF-8">
+  <title>COMBRIDGE&EB お年玉くじ</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
+      background: #ffffff;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #1c1c1c;
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 250px;
+      padding: 10px;
+      margin: 8px;
+      border-radius: 10px;
+      border: 2px solid #7f7f7f;
+      font-size: 16px;
+      outline: none;
+    }
+    input:focus {
+      border-color: #1c1c1c;
+      background: #fafafa;
+    }
+
+    /* 結果テキスト */
+    #resultText {
+      font-size: 40px;
+      color: #1c1c1c;
+      font-weight: bold;
+      margin-bottom: 20px; /* くじ箱との間隔 */
+      display: none; /* 初期状態は非表示 */
+    }
+
+    /* くじ箱 */
+    #box {
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .box-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 15px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* くじ箱アニメーション */
+    .shake {
+      animation: shake 2s ease-in-out;
+    }
+    @keyframes shake {
+      0% { transform: rotate(0deg); }
+      10% { transform: rotate(10deg); }
+      20% { transform: rotate(-10deg); }
+      30% { transform: rotate(10deg); }
+      40% { transform: rotate(-10deg); }
+      50% { transform: rotate(5deg); }
+      60% { transform: rotate(-5deg); }
+      70% { transform: rotate(5deg); }
+      80% { transform: rotate(-5deg); }
+      90% { transform: rotate(2deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* ボタン */
+    button {
+      background: #1c1c1c;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px #dcdcdc;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #1c1c1c;
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+<body>
+
+  <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
+
+  <input id="name" type="text" placeholder="名前"><br><br>
+  <input id="email" type="email" placeholder="メールアドレス"><br><br>
+  <button id="drawButton" onclick="draw()">くじを引く</button>
+
+  <!-- 結果テキスト（くじ箱の上に表示） -->
+  <p id="resultText"></p>
+
+  <!-- くじ箱 -->
+  <div id="box">
+    <img src="box_icon.png" class="box-icon">
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
+
+    async function draw() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      if (!name || !email) {
+        alert("名前とメールアドレスを入力してください。");
+        return;
       }
 
-      h2 {
-        color: #1c1c1c;
-        font-size: 40px;
-        margin-bottom: 10px;
-      }
+      // 名前、メール、ボタンを非表示
+      document.getElementById("name").style.display = "none";
+      document.getElementById("email").style.display = "none";
+      document.getElementById("drawButton").style.display = "none";
 
-      input {
-        width: 250px;
-        padding: 10px;
-        margin: 8px;
-        border-radius: 10px;
-        border: 2px solid #7f7f7f;
-        font-size: 16px;
-        outline: none;
-      }
-      input:focus {
-        border-color: #1c1c1c;
-        background: #fafafa;
-      }
+      const box = document.getElementById("box");
+      const resultText = document.getElementById("resultText");
+      resultText.style.display = "none"; // 隠す
 
-      /* くじ箱 */
-      #box {
-        width: 400px;
-        height: 400px;
-        margin: 20px auto;
-        position: relative;
-        transition: all 0.5s ease-in-out; /* アニメーションの位置調整 */
-      }
+      // くじ箱を揺らす
+      box.classList.add("shake");
 
-      /* くじ箱の画像 */
-      .box-icon {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 15px;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-
-       /* くじ箱アニメーション */
-      .shake {
-        animation: shake 2s ease-in-out; /* アニメーション時間 */
-      }
-      @keyframes shake {
-        0% { transform: rotate(0deg); }
-        10% { transform: rotate(10deg); }
-        20% { transform: rotate(-10deg); }
-        30% { transform: rotate(10deg); }
-        40% { transform: rotate(-10deg); }
-        50% { transform: rotate(5deg); }
-        60% { transform: rotate(-5deg); }
-        70% { transform: rotate(5deg); }
-        80% { transform: rotate(-5deg); }
-        90% { transform: rotate(2deg); }
-        100% { transform: rotate(0deg); }
-      }
-
-      /* ボタン */
-      button {
-        background: #1c1c1c;
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px #dcdcdc;
-        transition: 0.2s;
-      }
-      button:hover {
-        background: #1c1c1c;
-        transform: scale(1.05);
-      }
-
-      #remaining {
-        font-size: 18px;
-        margin-top: 15px;
-        color: #1c1c1c;
-        display: none; /* 初期状態で非表示 */
-      }
-
-      /* 結果テキストのスタイル */
-      #resultText {
-        font-size: 40px;
-        color: #1c1c1c;
-        font-weight: bold;
-        margin-top: 20px;
-        display: none; /* 初期状態では非表示 */
-        margin-top: 20px;
-        text-align: center;
-      }
-
-    </style>
-  </head>
-  <body>
-    <h2>COMBRIDGE&EB
-    <br>お年玉くじ
-    </h2>
-    <input id="name" type="text" placeholder="名前"><br><br>
-    <input id="email" type="email" placeholder="メールアドレス"><br><br>
-    <!-- ボタンにIDを追加 -->
-    <button id="drawButton" onclick="draw()">くじを引く</button>
-    
-    <!-- 結果テキスト -->
-    <p id="resultText" style="display: none;"></p>
-    
-    <!-- くじ箱の部分 -->
-    <div id="box">
-      <img src="box_icon.png" class="box-icon">
-    </div>
-
-    <p id="remaining"></p>  <!-- 残りくじ数の部分（非表示） -->
-
-    <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
-      
-      async function draw() {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        
-        if (!name || !email) {
-          alert("名前とメールアドレスを入力してください。");
-          return;
-        }
-        
-        // 名前、メールアドレス入力欄、くじを引くボタンを非表示にする
-        document.getElementById("name").style.display = "none";
-        document.getElementById("email").style.display = "none";
-        document.getElementById("drawButton").style.display = "none"; // ボタンを非表示にする
-        
-        const box = document.getElementById("box");
-        const resultText = document.getElementById("resultText");
-        resultText.style.display = "none"; // 初期状態では隠す
-        
-        box.classList.add("shake"); // くじ箱を揺らす
-        
-        // アニメーション終了時に結果を表示
-        box.addEventListener("animationend", async function() {
-          box.classList.remove("shake"); // アニメーション終了後にくじ箱の揺れを止める
-          
-          // API呼び出し
-          const response = await fetch(API_URL, {
-            method: "POST",
-            body: JSON.stringify({ name, email })
-          });
-          
-          const data = await response.json();
-          
-          // くじがない場合、結果テキストを変更
-          if (data.remaining === 0) {
-            resultText.textContent = "くじがありません";
-          } else {
-          // 結果テキストに【】で囲んだ結果を表示
-          resultText.textContent = "＼ " + data.result + " ／"; // 結果を【】で囲む
-          resultText.style.display = "block"; // 結果テキストを表示
+      // アニメーション終了を待つ
+      await new Promise(resolve => {
+        box.addEventListener("animationend", function handler() {
+          box.classList.remove("shake");
+          box.removeEventListener("animationend", handler);
+          resolve();
         });
+      });
+
+      // API呼び出し
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ name, email })
+      });
+
+      const data = await response.json();
+
+      // 結果テキスト表示
+      if (data.remaining === 0) {
+        resultText.textContent = "くじがありません";
+      } else {
+        resultText.textContent = "【" + data.result + "】";
       }
-    </script>
-  </body>
+      resultText.style.display = "block";
+    }
+  </script>
+
+</body>
 </html>
