@@ -83,16 +83,17 @@
   }
 
   /* 結果画像のふわっとアニメ */
-  #resultImage {
-    width: 220px;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.8s;
-    margin-top: 10px;
-  }
-  #resultImage.show {
-    opacity: 1;
-  }
+ 　#resultImage {
+ 　  width: 220px;
+ 　  display: none;
+ 　  opacity: 0;
+  　 transition: opacity 0.8s;
+ 　  margin-top: 30px; /* ボタンの下に少し余白を加える */
+　}
+
+ 　#resultImage.show {
+　   opacity: 1;
+　}
 
 　.box-icon {
   width: 90px;
@@ -112,7 +113,13 @@
 		<input id="email" type="email" placeholder="メールアドレス"><br><br>
 		
 		<button onclick="draw()">くじを引く</button>
-		
+
+　　　　　<!-- 結果画像の部分をくじ箱の上に移動 -->
+　　　　　<img id="resultImage">
+　　　　　<div id="box">
+ 　　　  　　　<img src="box_icon.png" class="box-icon">
+　　　　　</div>
+
 		<!-- くじ箱の部分 -->
         <div id="box">
           <img src="box_icon.png" class="box-icon">
@@ -120,8 +127,7 @@
 
 		
 		<p id="remaining"></p>
-		
-		<img id="resultImage">
+
 		
 		<script>
 			const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
@@ -145,6 +151,11 @@
 				await new Promise(r => setTimeout(r, 1000));
 				
 				box.classList.remove("shake");
+
+				// 結果画像を表示
+                img.src = data.image;
+                img.style.display = "block";
+                img.classList.add("show");
 				
 				const response = await fetch(API_URL, {
 						method: "POST",
