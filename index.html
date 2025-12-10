@@ -2,9 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8">
-    <title>COMBRIDGE&EB
-    <br>お年玉くじ
-    </title>
+    <title>オリジナルくじ引き</title>
     <style>
       body {
         text-align: center;
@@ -35,8 +33,8 @@
 
       /* くじ箱 */
       #box {
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
         margin: 20px auto;
         position: relative;
       }
@@ -85,6 +83,7 @@
         font-size: 18px;
         margin-top: 15px;
         color: #ff4f92;
+        display: none; /* 初期状態で非表示 */
       }
 
       /* 結果テキストのスタイル */
@@ -99,9 +98,7 @@
     </style>
   </head>
   <body>
-    <h2>COMBRIDGE&EB
-    <br>お年玉くじ
-    </h2>
+    <h2>オリジナルくじ引き</h2>
     <input id="name" type="text" placeholder="名前"><br><br>
     <input id="email" type="email" placeholder="メールアドレス"><br><br>
     <button onclick="draw()">くじを引く</button>
@@ -114,7 +111,7 @@
       <img src="box_icon.png" class="box-icon">
     </div>
 
-    <p id="remaining"></p>
+    <p id="remaining"></p>  <!-- 残りくじ数の部分（非表示） -->
 
     <script>
       const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
@@ -146,12 +143,12 @@
         
         const data = await response.json();
         
-        // 結果テキストに変更
-        resultText.textContent = "＼ " + data.result + " ／"; // data.result でAPIの結果を表示
+        // 結果テキストに【】で囲んだ結果を表示
+        resultText.textContent = "【" + data.result + "】"; // 結果を【】で囲む
         resultText.style.display = "block"; // 結果テキストを表示
         
-        document.getElementById("remaining").innerText =
-        "残り：" + data.remaining + "個";
+        // 残りくじ数の表示を非表示にする
+        document.getElementById("remaining").style.display = "none";  // 非表示にする
       }
     </script>
   </body>
