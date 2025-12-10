@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>COMBRIDGE&EB お年玉くじ</title>
   <style>
+    /* htmlとbodyを画面全体に */
     html, body {
       height: 100%;
       margin: 0;
@@ -14,27 +15,24 @@
     body {
       text-align: center;
       font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-      min-height: 100vh;
+      min-height: 100vh; /* ビューポート全体をカバー */
       background: linear-gradient(to bottom, #fff5f5, #ffe6cc); /* 赤～金のグラデ */
       padding: 30px;
     }
 
-    /* お正月風タイトル */
+    /* タイトル */
     h2 {
-      font-size: 48px;
-      font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-      background: linear-gradient(90deg, #d00000, #ffd700); /* 赤→金 */
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px #fff5e6; /* 白のふんわり影 */
+      color: #d00000; /* 赤文字 */
+      font-size: 44px;
       margin-bottom: 20px;
+      text-shadow: 2px 2px #ffd700; /* 金色の影 */
     }
 
     /* 入力欄 */
     input {
       width: 250px;
       padding: 10px;
-      margin: 4px 8px; /* 名前とメールの間隔を詰める */
+      margin: 8px;
       border-radius: 10px;
       border: 2px solid #d00000;
       font-size: 16px;
@@ -76,7 +74,7 @@
     #box {
       width: 400px;
       height: 400px;
-      margin: 50px auto 0 auto; /* ボタンとの間隔を50pxに */
+      margin: 50px auto 0 auto; /* 上の余白を50pxに変更 */
       position: relative;
     }
 
@@ -114,7 +112,7 @@
   <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
   <input id="name" type="text" placeholder="名前"><br>
-  <input id="email" type="email" placeholder="メールアドレス"><br>
+  <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
   <!-- 結果テキスト（くじ箱の上に表示） -->
@@ -168,9 +166,9 @@
 
       // 結果テキスト表示
       if (data.remaining === 0) {
-        resultText.textContent = "＼ くじがありません ／";
+        resultText.textContent = "くじがありません";
       } else {
-        resultText.textContent = "＼ " + data.result + " ／";
+        resultText.textContent = "【" + data.result + "】";
       }
       resultText.style.display = "block";
     }
