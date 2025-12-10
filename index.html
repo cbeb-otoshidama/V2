@@ -168,9 +168,11 @@
       if (data.remaining === 0) {
         resultText.textContent = "くじがありません";
       } else {
-        resultText.textContent = "【" + data.result + "】";
+        const prizeText = data.prize ? "：" + data.prize : "";
+        resultText.textContent = "【" + data.result + prizeText + "】";
       }
       resultText.style.display = "block";
+
     }
   </script>
 
