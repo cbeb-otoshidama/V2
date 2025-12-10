@@ -7,12 +7,12 @@
       body {
         text-align: center;
         font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-        background: #fff5fb;
+        background: #ffffff;
         padding: 30px;
       }
 
       h2 {
-        color: #ff66a5;
+        color: #1c1c1c;
         font-size: 40px;
         margin-bottom: 10px;
       }
@@ -27,7 +27,7 @@
         outline: none;
       }
       input:focus {
-        border-color: #ff66a5;
+        border-color: #1c1c1c;
         background: #fff0f6;
       }
 
@@ -70,7 +70,7 @@
 
       /* ボタン */
       button {
-        background: #ff66a5;
+        background: #1c1c1c;
         color: white;
         border: none;
         padding: 12px 25px;
@@ -88,14 +88,14 @@
       #remaining {
         font-size: 18px;
         margin-top: 15px;
-        color: #ff4f92;
+        color: #1c1c1c;
         display: none; /* 初期状態で非表示 */
       }
 
       /* 結果テキストのスタイル */
       #resultText {
         font-size: 40px;
-        color: #ff66a5;
+        color: #1c1c1c;
         font-weight: bold;
         margin-top: 20px;
         display: none; /* 初期状態で非表示 */
@@ -152,7 +152,7 @@
           const data = await response.json();
           
           // 結果テキストに【】で囲んだ結果を表示
-          resultText.textContent = "＼" + data.result + "／"; // 結果を【】で囲む
+          resultText.textContent = "＼ " + data.result + " ／"; // 結果を【】で囲む
           resultText.style.display = "block"; // 結果テキストを表示
         });
       }
