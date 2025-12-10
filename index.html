@@ -168,12 +168,12 @@
       if (data.remaining === 0) {
         resultText.textContent = "くじがありません";
       } else {
-        const prizeText = data.prize ? "：" + data.prize : "";
-        resultText.textContent = "【" + data.result + prizeText + "】";
+        // 1行目：＼ 結果 ／
+        // 2行目：賞品名
+        resultText.innerHTML = "＼ " + data.result + " ／<br>" + data.prize;
       }
-      resultText.style.display = "block";
-
-    }
+        resultText.style.display = "block";
+      }
   </script>
 
 </body>
