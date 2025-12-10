@@ -145,7 +145,7 @@
         const data = await response.json();
         
         // 結果テキストに変更
-        resultText.textContent = "結果: " + data.result; // data.result でAPIの結果を表示
+        resultText.textContent = "＼ " + data.result + " ／"; // data.result でAPIの結果を表示
         resultText.style.display = "block"; // 結果テキストを表示
         
         document.getElementById("remaining").innerText =
