@@ -109,7 +109,8 @@
     </h2>
     <input id="name" type="text" placeholder="名前"><br><br>
     <input id="email" type="email" placeholder="メールアドレス"><br><br>
-    <button onclick="draw()">くじを引く</button>
+    <!-- ボタンにIDを追加 -->
+    <button id="drawButton" onclick="draw()">くじを引く</button>
     
     <!-- 結果テキスト -->
     <p id="resultText" style="display: none;"></p>
@@ -136,18 +137,17 @@
         // 名前、メールアドレス入力欄、くじを引くボタンを非表示にする
         document.getElementById("name").style.display = "none";
         document.getElementById("email").style.display = "none";
-        document.getElementById("drawButton").style.display = "none";
+        document.getElementById("drawButton").style.display = "none"; // ボタンを非表示にする
         
         const box = document.getElementById("box");
         const resultText = document.getElementById("resultText");
         resultText.style.display = "none"; // 初期状態では隠す
         
-        box.classList.add("shake");
+        box.classList.add("shake"); // くじ箱を揺らす
         
         // アニメーション終了時に結果を表示
         box.addEventListener("animationend", async function() {
-        box.classList.remove("shake"); // アニメーション終了後にクラスを削除
-          
+          box.classList.remove("shake"); // アニメーション終了後にくじ箱の揺れを止める
           
           // API呼び出し
           const response = await fetch(API_URL, {
