@@ -70,6 +70,21 @@
       text-shadow: 1px 1px #ffd700;
     }
 
+    /* 結果（大きめ） */
+　　　.result-main {
+  　　　font-size: 48px;
+  　　　font-weight: bold;
+  　　　color: #d40000; /* おめでたい赤色 */
+　　　}
+
+　　　/* 賞品名（小さめ） */
+　　　.result-prize {
+ 　　　 font-size: 24px;
+  　　　color: #333;
+  　　　margin-top: 10px;
+  　　　display: block;
+　　　}
+
     /* くじ箱 */
     #box {
       width: 400px;
@@ -166,12 +181,15 @@
 
       // 結果テキスト表示
       if (data.remaining === 0) {
-        resultText.textContent = "くじがありません";
-      } else {
-        // 1行目：＼ 結果 ／
-        // 2行目：賞品名
-        resultText.innerHTML = "＼ " + data.result + " ／<br>" + data.prize;
-      }
+  　　　　resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+　　　　} else {
+
+　　　　  resultText.innerHTML =
+    　　　　"<span class='result-main'>＼ " + data.result + " ／</span>" +
+    　　　　"<br>" +
+    　　　　"<span class='result-prize'>" + data.prize + "</span>";
+　　　　}
+
         resultText.style.display = "block";
       }
   </script>
