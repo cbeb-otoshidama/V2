@@ -132,6 +132,11 @@
           alert("名前とメールアドレスを入力してください。");
           return;
         }
+
+        // 名前、メールアドレス入力欄、くじを引くボタンを非表示にする
+        document.getElementById("name").style.display = "none";
+        document.getElementById("email").style.display = "none";
+        document.getElementById("drawButton").style.display = "none";
         
         const box = document.getElementById("box");
         const resultText = document.getElementById("resultText");
