@@ -197,16 +197,14 @@
           "<span class='result-main'>すでに参加済みです</span>";
       }
 
-      else if (data.remaining === 0) {
-        resultText.innerHTML =
-          "<span class='result-main'>くじがありません</span>";
-      }
-
-      else {
-        resultText.innerHTML =
-          "<span class='result-main'>＼ " + data.result + " ／</span>" +
-          "<br>" +
-          "<span class='result-prize'>" + data.prize + "</span>";
+      // 残り数を数値に変換してから判定
+      if (Number(data.remaining) === 0) {
+          resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+      } else {
+          resultText.innerHTML =
+              "<span class='result-main'>＼ " + data.result + " ／</span>" +
+              "<br>" +
+              "<span class='result-prize'>" + data.prize + "</span>";
       }
 
       resultText.style.display = "block";
