@@ -24,7 +24,7 @@
     h2 {
       color: #d00000; /* 赤文字 */
       font-size: 44px;
-      margin-bottom: 60px;
+      margin-bottom: 20px;
       text-shadow: 2px 2px #ffd700; /* 金色の影 */
     }
 
@@ -39,7 +39,7 @@
       outline: none;
     }
     input:focus {
-      border-color: #d00000;
+      border-color: #ffd700;
       background: #fff8e7;
     }
 
@@ -70,38 +70,11 @@
       text-shadow: 1px 1px #ffd700;
     }
 
-    /* 結果テキストの跳ねるアニメーション */
-    .bounce {
-      animation: bounce 0.8s ease;
-    }
-
-    @keyframes bounce {
-      0%   { transform: scale(0.6); opacity: 0; }
-      50%  { transform: scale(1.2); opacity: 1; }
-      70%  { transform: scale(0.9); }
-      100% { transform: scale(1); }
-    }
-
-    /* 結果（大きめ） */
-    .result-main {
-      font-size: 48px;
-      font-weight: bold;
-      color: #d00000;
-    }
-
-    /* 賞品名（小さめ） */
-    .result-prize {
-      font-size: 24px;
-      color: #d00000;
-      margin-top: 10px;
-      display: block;
-    }
-
     /* くじ箱 */
     #box {
       width: 400px;
       height: 400px;
-      margin: 80px auto 0 auto; /* 上の余白を50pxに変更 */
+      margin: 50px auto 0 auto; /* 上の余白を50pxに変更 */
       position: relative;
     }
 
@@ -138,7 +111,7 @@
 
   <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
-  <input id="name" type="text" placeholder="名前"><br>
+  <input id="name" type="text" placeholder="名前"><br><br>
   <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
@@ -151,7 +124,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxGzeR7QuK5AXRmLfOgaIVnktRefM5CFEuA-Wjp7gbf0bBtZmp0MOnmsT3f5ezmKmVu/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
 
     async function draw() {
       const name = document.getElementById("name").value;
@@ -192,31 +165,13 @@
       const data = await response.json();
 
       // 結果テキスト表示
-      if (data.result === "参加済み") {
-        resultText.innerHTML =
-          "<span class='result-main'>すでに参加済みです</span>";
-      }
-
-      // 残り数を数値に変換してから判定
-      if (Number(data.remaining) === 0) {
-          resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+      if (data.remaining === 0) {
+        resultText.textContent = "くじがありません";
       } else {
-          resultText.innerHTML =
-              "<span class='result-main'>＼ " + data.result + " ／</span>" +
-              "<br>" +
-              "<span class='result-prize'>" + data.prize + "</span>";
+        resultText.textContent = "【" + data.result + "】";
       }
-
       resultText.style.display = "block";
-      
-      // アニメーション用に一度クラスを消して付け直す
-      resultText.classList.remove("bounce");
-      void resultText.offsetWidth; // ←強制再描画でアニメーションをリセット
-      resultText.classList.add("bounce");
-
-      resultText.style.display = "block";
-
-      }
+    }
   </script>
 
 </body>
