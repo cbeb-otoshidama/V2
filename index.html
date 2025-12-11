@@ -178,7 +178,7 @@
   });
 
   // 残り数を判定して結果表示
-  if (Number(data.remaining) === 0) {
+  if (Number(data.remaining) <= 0) {  // 残りが0以下なら「くじがありません」を表示
     resultText.innerHTML =
       "<span class='result-main'>くじがありません</span>";
   } else {
