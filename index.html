@@ -126,16 +126,15 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbyntDoPFUWfiTrQ9cF9IxfzB7Uq6bBB_Gh1nG1hutf-hsoDlc8pnMpb8V430qjz_ckH/exec";
 
-    async function draw() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
+   async function draw() {
+   const name = document.getElementById("name").value;
+   const email = document.getElementById("email").value;
 
   if (!name || !email) {
     alert("名前とメールアドレスを入力してください。");
     return;
   }
 
-  // 名前・メール・ボタンを非表示
   document.getElementById("name").style.display = "none";
   document.getElementById("email").style.display = "none";
   document.getElementById("drawButton").style.display = "none";
@@ -144,28 +143,18 @@
   const resultText = document.getElementById("resultText");
   resultText.style.display = "none";
 
-  // くじ箱を揺らす
+  // くじ箱を揺らす（処理と完全並列）
   box.classList.add("shake");
+  setTimeout(() => box.classList.remove("shake"), 900); // 0.9秒で終了
 
-  // APIを先に呼ぶ（揺れている間に処理）
-  const responsePromise = fetch(API_URL, {
+  // API を即呼び出し
+  const response = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({ name, email })
-  }).then(res => res.json());
-
-  // 揺れ終了を待つ
-  await new Promise(resolve => {
-    box.addEventListener("animationend", function handler() {
-      box.classList.remove("shake");
-      box.removeEventListener("animationend", handler);
-      resolve();
-    });
   });
+  const data = await response.json();
 
-  // API結果を取得
-  const data = await responsePromise;
-
-  // 結果テキスト表示
+  // 結果表示（APIが終わった瞬間に出す）
   if (data.result === "参加済み") {
     resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
   } else if (Number(data.remaining) === 0) {
@@ -179,11 +168,12 @@
 
   // バウンスアニメーション
   resultText.classList.remove("bounce");
-  void resultText.offsetWidth; // 再描画
+  void resultText.offsetWidth;
   resultText.classList.add("bounce");
-  resultText.style.display = "block";
-　}
 
+  resultText.style.display = "block";
+  }
+ 
   </script>
 
 </body>
