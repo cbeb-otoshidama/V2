@@ -177,16 +177,22 @@
     });
   });
 
-  // 残り数を判定して結果表示
-  if (Number(data.remaining) === 0) {
-    resultText.innerHTML =
-      "<span class='result-main'>くじがありません</span>";
-  } else {
-    resultText.innerHTML =
-      "<span class='result-main'>＼ " + data.result + " ／</span>" +
-      "<br>" +
-      "<span class='result-prize'>" + data.prize + "</span>";
-  }
+  // ⑤ 結果表示（status で判定する）
+if (data.status === "already") {
+  resultText.innerHTML =
+    "<span class='result-main'>すでに参加済みです</span>";
+}
+else if (data.status === "empty") {
+  resultText.innerHTML =
+    "<span class='result-main'>くじがありません</span>";
+}
+else if (data.status === "ok") {
+  resultText.innerHTML =
+    "<span class='result-main'>＼ " + data.result + " ／</span>" +
+    "<br>" +
+    "<span class='result-prize'>" + data.prize + "</span>";
+}
+
 
   resultText.style.display = "block";
 
