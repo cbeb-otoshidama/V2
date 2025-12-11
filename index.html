@@ -1,142 +1,107 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>COMBRIDGE&EB お年玉くじ</title>
-  <style>
-    html, body { height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      text-align: center;
-      font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(to bottom, #fff5f5, #ffe6cc);
-      padding: 30px;
-    }
-    h2 { color: #d00000; font-size: 44px; margin-bottom: 20px; text-shadow: 2px 2px #ffd700; }
-    input {
-      width: 250px; padding: 10px; margin: 8px;
-      border-radius: 10px; border: 2px solid #d00000; font-size: 16px; outline: none;
-    }
-    input:focus { border-color: #ffd700; background: #fff8e7; }
-    button {
-      background: linear-gradient(to bottom, #d00000, #ff6666);
-      color: #fffde7; border: none; padding: 12px 25px; border-radius: 30px;
-      font-size: 18px; cursor: pointer; box-shadow: 0 4px 6px #dcdcdc; transition: 0.2s;
-    }
-    button:hover { background: linear-gradient(to bottom, #ff6666, #d00000); transform: scale(1.05); }
-    #resultText { font-size: 42px; color: #d00000; font-weight: bold; margin-bottom: 20px; display: none; text-shadow: 1px 1px #ffd700; }
-    .bounce { animation: bounce 0.8s ease; }
-    @keyframes bounce {
-      0% { transform: scale(0.6); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
-      70% { transform: scale(0.9); }
-      100% { transform: scale(1); }
-    }
-    .result-main { font-size: 48px; font-weight: bold; color: #d00000; }
-    .result-prize { font-size: 24px; color: #d00000; margin-top: 10px; display: block; }
-    #box { width: 400px; height: 400px; margin: 50px auto 0 auto; position: relative; }
-    .box-icon { width: 100%; height: 100%; object-fit: contain; border-radius: 15px; position: absolute; top: 0; left: 0; }
-    .shake { animation: shake 2s ease-in-out; }
-    @keyframes shake {
-      0% { transform: rotate(0deg); }
-      10% { transform: rotate(10deg); }
-      20% { transform: rotate(-10deg); }
-      30% { transform: rotate(10deg); }
-      40% { transform: rotate(-10deg); }
-      50% { transform: rotate(5deg); }
-      60% { transform: rotate(-5deg); }
-      70% { transform: rotate(5deg); }
-      80% { transform: rotate(-5deg); }
-      90% { transform: rotate(2deg); }
-      100% { transform: rotate(0deg); }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>COMBRIDGE&EB お年玉くじ</title>
+<style>
+html, body {height:100%; margin:0; padding:0; box-sizing:border-box;}
+body {text-align:center; font-family:"Hiragino Maru Gothic Pro", sans-serif; min-height:100vh; background: linear-gradient(to bottom, #fff5f5, #ffe6cc); padding:30px;}
+h2 {color:#d00000; font-size:44px; margin-bottom:20px; text-shadow:2px 2px #ffd700;}
+input {width:250px; padding:10px; margin:8px; border-radius:10px; border:2px solid #d00000; font-size:16px; outline:none;}
+input:focus {border-color:#ffd700; background:#fff8e7;}
+button {background:linear-gradient(to bottom, #d00000,#ff6666); color:#fffde7; border:none; padding:12px 25px; border-radius:30px; font-size:18px; cursor:pointer; box-shadow:0 4px 6px #dcdcdc; transition:0.2s;}
+button:hover {background:linear-gradient(to bottom,#ff6666,#d00000); transform:scale(1.05);}
+#resultText {font-size:42px; color:#d00000; font-weight:bold; margin-bottom:20px; display:none; text-shadow:1px 1px #ffd700;}
+.bounce {animation:bounce 0.8s ease;}
+@keyframes bounce {0%{transform:scale(0.6);opacity:0;}50%{transform:scale(1.2);opacity:1;}70%{transform:scale(0.9);}100%{transform:scale(1);}}
+.result-main {font-size:48px; font-weight:bold; color:#d00000;}
+.result-prize {font-size:24px; color:#d00000; margin-top:10px; display:block;}
+#box {width:400px;height:400px;margin:50px auto 0 auto; position:relative;}
+.box-icon {width:100%;height:100%;object-fit:contain;border-radius:15px;position:absolute;top:0;left:0;}
+.shake {animation:shake 2s ease-in-out;}
+@keyframes shake {0%{transform:rotate(0deg);}10%{transform:rotate(10deg);}20%{transform:rotate(-10deg);}30%{transform:rotate(10deg);}40%{transform:rotate(-10deg);}50%{transform:rotate(5deg);}60%{transform:rotate(-5deg);}70%{transform:rotate(5deg);}80%{transform:rotate(-5deg);}90%{transform:rotate(2deg);}100%{transform:rotate(0deg);}}
+</style>
 </head>
 <body>
 
-  <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
+<h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
-  <input id="name" type="text" placeholder="名前"><br><br>
-  <input id="email" type="email" placeholder="メールアドレス"><br><br>
-  <button id="drawButton" onclick="draw()">くじを引く</button>
+<input id="name" type="text" placeholder="名前"><br><br>
+<input id="email" type="email" placeholder="メールアドレス"><br><br>
+<button id="drawButton" onclick="draw()">くじを引く</button>
 
-  <p id="resultText"></p>
+<p id="resultText"></p>
 
-  <div id="box">
-    <img src="box_icon.png" class="box-icon">
-  </div>
+<div id="box">
+  <img src="box_icon.png" class="box-icon">
+</div>
 
-  <script>
-    // ここに GAS Web アプリ URL を入れる（必ず「全員がアクセス可能」にデプロイ）
-    const API_URL = "https://script.google.com/macros/s/AKfycbw2jFbmMW2ihSkwQh9iKZwmPCNR0_9OLj2HSUpain27FD8vhamXlCxiLI3Xt-HcHnyt/exec";
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbzhEI5BzxiLf2vAHkDfwaOjd4QCJhnGewNnq0Z1zsuaUGFe74rOkoXS22EKNeUe-G18/exec";
 
-    async function draw() {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const resultText = document.getElementById("resultText");
-      const box = document.getElementById("box");
+async function draw() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const resultText = document.getElementById("resultText");
+  const box = document.getElementById("box");
 
-      if (!name || !email) {
-        alert("名前とメールアドレスを入力してください。");
-        return;
-      }
+  if (!name || !email) { alert("名前とメールアドレスを入力してください。"); return; }
 
-      // 入力欄とボタンを非表示
-      document.getElementById("name").style.display = "none";
-      document.getElementById("email").style.display = "none";
-      document.getElementById("drawButton").style.display = "none";
+  // 入力欄とボタンを非表示
+  document.getElementById("name").style.display = "none";
+  document.getElementById("email").style.display = "none";
+  document.getElementById("drawButton").style.display = "none";
 
-      let data;
-      try {
-        data = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email })
-        }).then(res => res.json());
-      } catch (err) {
-        alert("通信エラーが発生しました: " + err);
-        return;
-      }
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ name, email })
+    });
+    const data = await res.json();
 
-      // 参加済みなら即表示
-      if (data.result === "参加済み") {
-        showResult("すでに参加済みです", "");
-        return; // 揺れはスキップ
-      }
-
-      // 残りがない場合も即表示
-      if (Number(data.remaining) === 0) {
-        showResult("くじがありません", "");
-        return;
-      }
-
-      // 残りがある場合は揺れ開始
-      box.classList.add("shake");
-
-      await new Promise(resolve => {
-        box.addEventListener("animationend", function handler() {
-          box.classList.remove("shake");
-          box.removeEventListener("animationend", handler);
-          resolve();
-        });
-      });
-
-      // 揺れ終了後に結果表示
-      showResult("＼ " + data.result + " ／", data.prize);
-    }
-
-    function showResult(mainText, prizeText) {
-      const resultText = document.getElementById("resultText");
-      resultText.innerHTML = "<span class='result-main'>" + mainText + "</span>";
-      if (prizeText) {
-        resultText.innerHTML += "<br><span class='result-prize'>" + prizeText + "</span>";
-      }
+    // 参加済みなら即表示
+    if (data.status === "already") {
+      resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
       resultText.classList.remove("bounce");
       void resultText.offsetWidth;
       resultText.classList.add("bounce");
       resultText.style.display = "block";
+      return;
     }
-  </script>
+
+    // 残りがない場合も即表示
+    if (data.remaining === 0) {
+      resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+      resultText.classList.remove("bounce");
+      void resultText.offsetWidth;
+      resultText.classList.add("bounce");
+      resultText.style.display = "block";
+      return;
+    }
+
+    // 残りあり → 揺れ
+    box.classList.add("shake");
+    await new Promise(resolve => {
+      box.addEventListener("animationend", function handler() {
+        box.classList.remove("shake");
+        box.removeEventListener("animationend", handler);
+        resolve();
+      });
+    });
+
+    // 揺れ後に結果表示
+    resultText.innerHTML = `<span class="result-main">＼ ${data.result} ／</span><br><span class="result-prize">${data.prize}</span>`;
+    resultText.classList.remove("bounce");
+    void resultText.offsetWidth;
+    resultText.classList.add("bounce");
+    resultText.style.display = "block";
+
+  } catch(err) {
+    alert("通信エラーが発生しました：" + err);
+  }
+}
+</script>
 
 </body>
 </html>
