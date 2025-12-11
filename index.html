@@ -165,19 +165,22 @@
   // ④ API の結果がまだならここで受け取る（ほぼ即時になる）
   const data = await apiPromise;
 
-  // ⑤ 結果表示
-  if (data.result === "参加済み") {
+  // ⑤ 結果表示（status で判定する）
+  if (data.status === "already") {
     resultText.innerHTML =
       "<span class='result-main'>すでに参加済みです</span>";
-  } else if (Number(data.remaining) === 0) {
+  }
+  else if (data.status === "empty") {
     resultText.innerHTML =
       "<span class='result-main'>くじがありません</span>";
-  } else {
+  }
+  else if (data.status === "ok") {
     resultText.innerHTML =
       "<span class='result-main'>＼ " + data.result + " ／</span>" +
       "<br>" +
       "<span class='result-prize'>" + data.prize + "</span>";
   }
+
 
   // バウンスアニメーション
   resultText.classList.remove("bounce");
