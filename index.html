@@ -126,74 +126,72 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwQ-7Z4KqYbvDvMJdLihsT13akykt9A3iUKKt7Nec7l6x6SSHg-1d8BmAb5x9R3Y5y_/exec";
 
-  async function draw() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
+    async function draw() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
 
-  // 名前とメールアドレスが入力されていない場合
-  if (!name || !email) {
-    alert("名前とメールアドレスを入力してください。");
-    return;
-  }
+    // 名前とメールアドレスが入力されていない場合
+    if (!name || !email) {
+      alert("名前とメールアドレスを入力してください。");
+      return;
+    }
 
-  // 入力フォームとボタンを非表示にする
-  document.getElementById("name").style.display = "none";
-  document.getElementById("email").style.display = "none";
-  document.getElementById("drawButton").style.display = "none";
+    // 入力フォームとボタンを非表示にする
+    document.getElementById("name").style.display = "none";
+    document.getElementById("email").style.display = "none";
+    document.getElementById("drawButton").style.display = "none";
 
-  const resultText = document.getElementById("resultText");
-  resultText.style.display = "none";  // 結果テキストを非表示にする
+    const resultText = document.getElementById("resultText");
+    resultText.style.display = "none";  // 結果テキストを非表示にする
 
-  // API に問い合わせて参加済みかチェック
-  const response = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ name, email })
-  });
-  const data = await response.json();
-
-  // 受け取ったデータをコンソールに表示（デバッグ用）
-  console.log(data);  // data の内容を確認
-
-  // 参加済みのチェック
-  if (data.result === "参加済み") {
-    resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
-    resultText.style.display = "block";  // 結果テキストを表示
-    return; // ここで終了
-  }
-
-  // くじ箱を揺らす
-  const box = document.getElementById("box");
-  box.classList.add("shake");
-
-  // 揺れ終了を待機
-  await new Promise(resolve => {
-    box.addEventListener("animationend", function handler() {
-      box.classList.remove("shake");
-      box.removeEventListener("animationend", handler);
-      resolve();
+    // API に問い合わせて参加済みかチェック
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify({ name, email })
     });
-  });
+    const data = await response.json();
 
-  // 残りくじの数を判定して結果表示
-  if (Number(data.remaining) === 0) {
-    resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
-  } else {
-    resultText.innerHTML =
-      "<span class='result-main'>＼ " + data.result + " ／</span>" +
-      "<br>" +
-      "<span class='result-prize'>" + data.prize + "</span>";
+    // デバッグ用に受け取ったデータを表示
+    console.log("Received data: ", data);  // 受け取ったデータの内容を確認
+
+    // 参加済みのチェック
+    if (data.result === "参加済み") {
+      resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
+      resultText.style.display = "block";  // 結果テキストを表示
+      return; // ここで終了
+    }
+
+    // くじ箱を揺らす
+    const box = document.getElementById("box");
+    box.classList.add("shake");
+
+    // 揺れ終了を待機
+    await new Promise(resolve => {
+      box.addEventListener("animationend", function handler() {
+        box.classList.remove("shake");
+        box.removeEventListener("animationend", handler);
+        resolve();
+      });
+    });
+
+    // 残りくじの数を判定して結果表示
+    if (Number(data.remaining) === 0) {
+      resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+    } else {
+      resultText.innerHTML =
+        "<span class='result-main'>＼ " + data.result + " ／</span>" +
+        "<br>" +
+        "<span class='result-prize'>" + data.prize + "</span>";
+    }
+
+    resultText.style.display = "block";  // 結果テキストを表示
+
+    // バウンスアニメーション
+    resultText.classList.remove("bounce");
+    void resultText.offsetWidth;
+    resultText.classList.add("bounce");
   }
 
-  resultText.style.display = "block";  // 結果テキストを表示
-
-  // バウンスアニメーション
-  resultText.classList.remove("bounce");
-  void resultText.offsetWidth;
-  resultText.classList.add("bounce");
-}
-
-
- 
   </script>
 
 </body>
