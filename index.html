@@ -24,7 +24,7 @@
     h2 {
       color: #d00000; /* 赤文字 */
       font-size: 44px;
-      margin-bottom: 20px;
+      margin-bottom: 60px;
       text-shadow: 2px 2px #ffd700; /* 金色の影 */
     }
 
@@ -74,7 +74,7 @@
     #box {
       width: 400px;
       height: 400px;
-      margin: 50px auto 0 auto; /* 上の余白を50pxに変更 */
+      margin: 60px auto 0 auto; /* 上の余白を50pxに変更 */
       position: relative;
     }
 
@@ -111,7 +111,7 @@
 
   <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
-  <input id="name" type="text" placeholder="名前"><br><br>
+  <input id="name" type="text" placeholder="名前"><br>
   <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
@@ -181,7 +181,7 @@
   if (Number(data.remaining) === 0) {
     resultText.innerHTML =
       "<span class='result-main'>くじがありません</span>";
-  } else {
+  } else if (Number(data.remaining) > 0) {
     resultText.innerHTML =
       "<span class='result-main'>＼ " + data.result + " ／</span>" +
       "<br>" +
