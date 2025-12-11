@@ -127,51 +127,63 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyMeK6FoKUWdRtBcx0mpfnF6ojGEOHe3xAzBeItFx3INECm0Z8BQXNYs0TwxFsT5B23/exec";
 
     async function draw() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
 
-      if (!name || !email) {
-        alert("名前とメールアドレスを入力してください。");
-        return;
-      }
+  if (!name || !email) {
+    alert("名前とメールアドレスを入力してください。");
+    return;
+  }
 
-      // 名前・メール・ボタンを非表示
-      document.getElementById("name").style.display = "none";
-      document.getElementById("email").style.display = "none";
-      document.getElementById("drawButton").style.display = "none";
+  // 名前・メール・ボタンを非表示
+  document.getElementById("name").style.display = "none";
+  document.getElementById("email").style.display = "none";
+  document.getElementById("drawButton").style.display = "none";
 
-      const box = document.getElementById("box");
-      const resultText = document.getElementById("resultText");
-      resultText.style.display = "none";
+  const box = document.getElementById("box");
+  const resultText = document.getElementById("resultText");
+  resultText.style.display = "none";
 
-      // くじ箱を揺らす
-      box.classList.add("shake");
+  // くじ箱を揺らす
+  box.classList.add("shake");
 
-      // アニメーション終了を待機
-      await new Promise(resolve => {
-        box.addEventListener("animationend", function handler() {
-          box.classList.remove("shake");
-          box.removeEventListener("animationend", handler);
-          resolve();
-        });
-      });
+  // APIを先に呼ぶ（揺れている間に処理）
+  const responsePromise = fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ name, email })
+  }).then(res => res.json());
 
-      // API呼び出し
-      const response = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify({ name, email })
-      });
+  // 揺れ終了を待つ
+  await new Promise(resolve => {
+    box.addEventListener("animationend", function handler() {
+      box.classList.remove("shake");
+      box.removeEventListener("animationend", handler);
+      resolve();
+    });
+  });
 
-      const data = await response.json();
+  // API結果を取得
+  const data = await responsePromise;
 
-      // 結果テキスト表示
-      if (data.remaining === 0) {
-        resultText.textContent = "くじがありません";
-      } else {
-        resultText.textContent = "【" + data.result + "】";
-      }
-      resultText.style.display = "block";
-    }
+  // 結果テキスト表示
+  if (data.result === "参加済み") {
+    resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
+  } else if (Number(data.remaining) === 0) {
+    resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+  } else {
+    resultText.innerHTML =
+      "<span class='result-main'>＼ " + data.result + " ／</span>" +
+      "<br>" +
+      "<span class='result-prize'>" + data.prize + "</span>";
+  }
+
+  // バウンスアニメーション
+  resultText.classList.remove("bounce");
+  void resultText.offsetWidth; // 再描画
+  resultText.classList.add("bounce");
+  resultText.style.display = "block";
+　}
+
   </script>
 
 </body>
