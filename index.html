@@ -178,14 +178,16 @@
   });
 
   // 残り数を判定して結果表示
-  if (Number(data.remaining) <= 0) {  // 残りが0以下なら「くじがありません」を表示
-    resultText.innerHTML =
-      "<span class='result-main'>くじがありません</span>";
+  if (data.status === "empty") {
+  // くじそのものが無い場合（GAS側が empty を返す）
+  resultText.innerHTML =
+    "<span class='result-main'>くじがありません</span>";
   } else {
-    resultText.innerHTML =
-      "<span class='result-main'>＼ " + data.result + " ／</span>" +
-      "<br>" +
-      "<span class='result-prize'>" + data.prize + "</span>";
+  // 残り0になっても構わず当選結果を表示する
+  resultText.innerHTML =
+    "<span class='result-main'>＼ " + data.result + " ／</span>" +
+    "<br>" +
+    "<span class='result-prize'>" + data.prize + "</span>";
   }
 
   resultText.style.display = "block";
