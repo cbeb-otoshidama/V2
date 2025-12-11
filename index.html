@@ -129,8 +129,6 @@
   async function draw() {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
-  const resultText = document.getElementById("resultText");
-  const box = document.getElementById("box");
 
   if (!name || !email) {
     alert("名前とメールアドレスを入力してください。");
@@ -142,7 +140,10 @@
   document.getElementById("email").style.display = "none";
   document.getElementById("drawButton").style.display = "none";
 
-  // 先に API を呼んで参加済みか確認
+  const resultText = document.getElementById("resultText");
+  resultText.style.display = "none";
+
+  // まず API に問い合わせて参加済みかチェック
   const response = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({ name, email })
@@ -150,14 +151,24 @@
   const data = await response.json();
 
   if (data.result === "参加済み") {
-    // 参加済みなら揺れずに即表示
-    resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
+    // 参加済みならくじ箱を揺らさずに即表示
+    resultText.innerHTML =
+      "<span class='result-main'>すでに参加済みです</span>";
     resultText.style.display = "block";
-    return;
+
+    // バウンスアニメーション
+    resultText.classList.remove("bounce");
+    void resultText.offsetWidth;
+    resultText.classList.add("bounce");
+
+    return; // ここで終了
   }
 
-  // くじ箱を揺らす
+  // 参加済みでなければくじ箱を揺らす
+  const box = document.getElementById("box");
   box.classList.add("shake");
+
+  // 揺れ終了を待機
   await new Promise(resolve => {
     box.addEventListener("animationend", function handler() {
       box.classList.remove("shake");
@@ -166,22 +177,25 @@
     });
   });
 
-  // ここで残り数や結果を表示
+  // 残り数を判定して結果表示
   if (Number(data.remaining) === 0) {
-    resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+    resultText.innerHTML =
+      "<span class='result-main'>くじがありません</span>";
   } else {
     resultText.innerHTML =
-      "<span class='result-main'>＼ " + data.result + " ／</span><br>" +
+      "<span class='result-main'>＼ " + data.result + " ／</span>" +
+      "<br>" +
       "<span class='result-prize'>" + data.prize + "</span>";
   }
+
+  resultText.style.display = "block";
 
   // バウンスアニメーション
   resultText.classList.remove("bounce");
   void resultText.offsetWidth;
   resultText.classList.add("bounce");
+}
 
-  resultText.style.display = "block";
- }
  
   </script>
 
