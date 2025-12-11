@@ -103,7 +103,7 @@
   </div>
 
   <script>
-    const API_URL = "YOUR_API_URL_HERE";
+    const API_URL = "https://script.google.com/macros/s/AKfycbwYcYiH6IoDMH8q0bB94x7gkxxHTZn7kJUYl9dOWmuBXRsk6cMIHH4eid-XjcEc4V5Z/exec";
 
     async function draw() {
       const name = document.getElementById("name").value;
@@ -124,8 +124,14 @@
       // API呼び出し
       const data = await fetch(API_URL, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email })
-      }).then(res => res.json());
+      }).then(res => res.json())
+        .catch(err => {
+          alert("通信エラーが発生しました: " + err);
+          console.error(err);
+          throw err;
+      });
 
       // 参加済みなら即表示
       if (data.result === "参加済み") {
