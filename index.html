@@ -24,7 +24,7 @@
     h2 {
       color: #d00000; /* 赤文字 */
       font-size: 44px;
-      margin-bottom: 60px;
+      margin-bottom: 20px;
       text-shadow: 2px 2px #ffd700; /* 金色の影 */
     }
 
@@ -74,7 +74,7 @@
     #box {
       width: 400px;
       height: 400px;
-      margin: 60px auto 0 auto; /* 上の余白を50pxに変更 */
+      margin: 50px auto 0 auto; /* 上の余白を50pxに変更 */
       position: relative;
     }
 
@@ -111,7 +111,7 @@
 
   <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
-  <input id="name" type="text" placeholder="名前"><br>
+  <input id="name" type="text" placeholder="名前"><br><br>
   <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
@@ -124,74 +124,79 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyMCHW-38g2Ric5dK9v7XQ841u7Kq2o1M1YGnaw3TB7D27wUfdzFBLDyzg7aP0LKaRR/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbz2exHPCdtqvCaYhRVxlBBBkc6XMJgch4d0PHnWyTgMCVQxHd2i7Wm0wPWVZKMffHZW/exec";
 
-    async function draw() {
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+  async function draw() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
 
-    // 名前とメールアドレスが入力されていない場合
-    if (!name || !email) {
-      alert("名前とメールアドレスを入力してください。");
-      return;
-    }
+  if (!name || !email) {
+    alert("名前とメールアドレスを入力してください。");
+    return;
+  }
 
-    // 入力フォームとボタンを非表示にする
-    document.getElementById("name").style.display = "none";
-    document.getElementById("email").style.display = "none";
-    document.getElementById("drawButton").style.display = "none";
+  // 名前・メール・ボタンを非表示
+  document.getElementById("name").style.display = "none";
+  document.getElementById("email").style.display = "none";
+  document.getElementById("drawButton").style.display = "none";
 
-    const resultText = document.getElementById("resultText");
-    resultText.style.display = "none";  // 結果テキストを非表示にする
+  const resultText = document.getElementById("resultText");
+  resultText.style.display = "none";
 
-    // API に問い合わせて参加済みかチェック
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({ name, email })
-    });
-    const data = await response.json();
+  // まず API に問い合わせて参加済みかチェック
+  const response = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ name, email })
+  });
+  const data = await response.json();
 
-    // デバッグ用に受け取ったデータを表示
-    console.log("Received data: ", data);  // 受け取ったデータの内容を確認
-
-    // 参加済みのチェック
-    if (data.result === "参加済み") {
-      resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
-      resultText.style.display = "block";  // 結果テキストを表示
-      return; // ここで終了
-    }
-
-    // くじ箱を揺らす
-    const box = document.getElementById("box");
-    box.classList.add("shake");
-
-    // 揺れ終了を待機
-    await new Promise(resolve => {
-      box.addEventListener("animationend", function handler() {
-        box.classList.remove("shake");
-        box.removeEventListener("animationend", handler);
-        resolve();
-      });
-    });
-
-    // 残りくじの数を判定して結果表示
-    if (Number(data.remaining) === 0) {
-      resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
-    } else {
-      resultText.innerHTML =
-        "<span class='result-main'>＼ " + data.result + " ／</span>" +
-        "<br>" +
-        "<span class='result-prize'>" + data.prize + "</span>";
-    }
-
-    resultText.style.display = "block";  // 結果テキストを表示
+  if (data.result === "参加済み") {
+    // 参加済みならくじ箱を揺らさずに即表示
+    resultText.innerHTML =
+      "<span class='result-main'>すでに参加済みです</span>";
+    resultText.style.display = "block";
 
     // バウンスアニメーション
     resultText.classList.remove("bounce");
     void resultText.offsetWidth;
     resultText.classList.add("bounce");
+
+    return; // ここで終了
   }
 
+  // 参加済みでなければくじ箱を揺らす
+  const box = document.getElementById("box");
+  box.classList.add("shake");
+
+  // 揺れ終了を待機
+  await new Promise(resolve => {
+    box.addEventListener("animationend", function handler() {
+      box.classList.remove("shake");
+      box.removeEventListener("animationend", handler);
+      resolve();
+    });
+  });
+
+  // 残り数を判定して結果表示
+  if (Number(data.remaining) === 0) {
+    resultText.innerHTML =
+      "<span class='result-main'>くじがありません</span>";
+  } else {
+    resultText.innerHTML =
+      "<span class='result-main'>＼ " + data.result + " ／</span>" +
+      "<br>" +
+      "<span class='result-prize'>" + data.prize + "</span>";
+  }
+
+  resultText.style.display = "block";
+
+  // バウンスアニメーション
+  resultText.classList.remove("bounce");
+  void resultText.offsetWidth;
+  resultText.classList.add("bounce");
+}
+
+ 
   </script>
 
 </body>
