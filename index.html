@@ -23,7 +23,7 @@
     h2 {
       color: #d00000;
       font-size: 44px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-shadow: 2px 2px #ffd700;
     }
 
@@ -108,7 +108,8 @@
 
   <h2>COMBRIDGE&EB<br>お年玉くじ</h2>
 
-  <input id="name" type="text" placeholder="名前"><br><br>
+  <br>
+  <input id="name" type="text" placeholder="名前"><br>
   <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
@@ -170,11 +171,6 @@
       }
 
       resultText.style.display = "block";
-
-      // バウンスアニメーション
-      resultText.classList.remove("bounce");
-      void resultText.offsetWidth;
-      resultText.classList.add("bounce");
 
     }
   </script>
