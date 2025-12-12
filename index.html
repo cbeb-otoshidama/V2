@@ -162,7 +162,7 @@
       if (data.status === "already") {
         resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
       } else if (data.status === "empty") {
-        resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+        resultText.innerHTML = "<span class='result-main'>お年玉くじは終了しました</span>";
       } else {
         resultText.innerHTML =
           "<span class='result-main'>＼ " + data.result + " ／</span><br>" +
@@ -170,6 +170,12 @@
       }
 
       resultText.style.display = "block";
+
+      // バウンスアニメーション
+      resultText.classList.remove("bounce");
+      void resultText.offsetWidth;
+      resultText.classList.add("bounce");
+
     }
   </script>
 
