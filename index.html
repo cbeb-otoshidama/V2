@@ -143,24 +143,17 @@
   const resultText = document.getElementById("resultText");
   resultText.style.display = "none";
 
-  // まず API に問い合わせて参加済みかチェック
-  const response = await fetch(API_URL, {
+  // ▼ API を先に呼び出す（待たない）
+  const apiPromise = fetch(API_URL, {
     method: "POST",
     body: JSON.stringify({ name, email })
-  });
-  const data = await response.json();
+  }).then(res => res.json());
 
   if (data.result === "参加済み") {
     // 参加済みならくじ箱を揺らさずに即表示
     resultText.innerHTML =
       "<span class='result-main'>すでに参加済みです</span>";
     resultText.style.display = "block";
-
-    // バウンスアニメーション
-    resultText.classList.remove("bounce");
-    void resultText.offsetWidth;
-    resultText.classList.add("bounce");
-
     return; // ここで終了
   }
 
@@ -176,6 +169,9 @@
       resolve();
     });
   });
+
+  // ▼ 揺れ終わったら API の結果取得
+    const data = await apiPromise;
 
   // 残り数を判定して結果表示
   if (data.status === "empty") {
