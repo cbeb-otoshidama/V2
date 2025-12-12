@@ -15,20 +15,18 @@
     body {
       text-align: center;
       font-family: "Hiragino Maru Gothic Pro", "Comic Sans MS", sans-serif;
-      min-height: 100vh; /* ビューポート全体をカバー */
-      background: linear-gradient(to bottom, #fff5f5, #ffe6cc); /* 赤～金のグラデ */
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #fff5f5, #ffe6cc);
       padding: 30px;
     }
 
-    /* タイトル */
     h2 {
-      color: #d00000; /* 赤文字 */
+      color: #d00000;
       font-size: 44px;
       margin-bottom: 20px;
-      text-shadow: 2px 2px #ffd700; /* 金色の影 */
+      text-shadow: 2px 2px #ffd700;
     }
 
-    /* 入力欄 */
     input {
       width: 250px;
       padding: 10px;
@@ -38,12 +36,12 @@
       font-size: 16px;
       outline: none;
     }
+
     input:focus {
       border-color: #ffd700;
       background: #fff8e7;
     }
 
-    /* ボタン */
     button {
       background: linear-gradient(to bottom, #d00000, #ff6666);
       color: #fffde7;
@@ -55,12 +53,12 @@
       box-shadow: 0 4px 6px #dcdcdc;
       transition: 0.2s;
     }
+
     button:hover {
       background: linear-gradient(to bottom, #ff6666, #d00000);
       transform: scale(1.05);
     }
 
-    /* 結果テキスト */
     #resultText {
       font-size: 42px;
       color: #d00000;
@@ -70,11 +68,10 @@
       text-shadow: 1px 1px #ffd700;
     }
 
-    /* くじ箱 */
     #box {
       width: 400px;
       height: 400px;
-      margin: 50px auto 0 auto; /* 上の余白を50pxに変更 */
+      margin: 50px auto 0 auto;
       position: relative;
     }
 
@@ -88,10 +85,10 @@
       left: 0;
     }
 
-    /* くじ箱アニメーション */
     .shake {
       animation: shake 2s ease-in-out;
     }
+
     @keyframes shake {
       0% { transform: rotate(0deg); }
       10% { transform: rotate(10deg); }
@@ -115,10 +112,8 @@
   <input id="email" type="email" placeholder="メールアドレス"><br><br>
   <button id="drawButton" onclick="draw()">くじを引く</button>
 
-  <!-- 結果テキスト（くじ箱の上に表示） -->
   <p id="resultText"></p>
 
-  <!-- くじ箱 -->
   <div id="box">
     <img src="box_icon.png" class="box-icon">
   </div>
@@ -126,75 +121,56 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwEJ8oH9INDX50ndAL244xkAx_M11eiE9QEqrhIQ6JYcER4bcSFfH4ZIdsAxYgr7IIF/exec";
 
-  async function draw() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
+    async function draw() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
 
-  if (!name || !email) {
-    alert("名前とメールアドレスを入力してください。");
-    return;
-  }
+      if (!name || !email) {
+        alert("名前とメールアドレスを入力してください。");
+        return;
+      }
 
-  // 名前・メール・ボタンを非表示
-  document.getElementById("name").style.display = "none";
-  document.getElementById("email").style.display = "none";
-  document.getElementById("drawButton").style.display = "none";
+      document.getElementById("name").style.display = "none";
+      document.getElementById("email").style.display = "none";
+      document.getElementById("drawButton").style.display = "none";
 
-  const resultText = document.getElementById("resultText");
-  resultText.style.display = "none";
+      const resultText = document.getElementById("resultText");
+      resultText.style.display = "none";
 
-  // ▼ API を先に呼び出す（待たない）
-  const apiPromise = fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ name, email })
-  }).then(res => res.json());
+      // ▼ API を先に呼び出す（待たない）
+      const apiPromise = fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({ name, email })
+      }).then(r => r.json());
 
-  if (data.result === "参加済み") {
-    // 参加済みならくじ箱を揺らさずに即表示
-    resultText.innerHTML =
-      "<span class='result-main'>すでに参加済みです</span>";
-    resultText.style.display = "block";
-    return; // ここで終了
-  }
+      // ▼ くじ箱を揺らす（必ず揺れる）
+      const box = document.getElementById("box");
+      box.classList.add("shake");
 
-  // 参加済みでなければくじ箱を揺らす
-  const box = document.getElementById("box");
-  box.classList.add("shake");
+      await new Promise(resolve => {
+        box.addEventListener("animationend", function handler() {
+          box.classList.remove("shake");
+          box.removeEventListener("animationend", handler);
+          resolve();
+        });
+      });
 
-  // 揺れ終了を待機
-  await new Promise(resolve => {
-    box.addEventListener("animationend", function handler() {
-      box.classList.remove("shake");
-      box.removeEventListener("animationend", handler);
-      resolve();
-    });
-  });
+      // ▼ ここで API の結果を取得
+      const data = await apiPromise;
 
-  // ▼ 揺れ終わったら API の結果取得
-    const data = await apiPromise;
+      // ▼ 結果判定
+      if (data.status === "already") {
+        resultText.innerHTML = "<span class='result-main'>すでに参加済みです</span>";
+      } else if (data.status === "empty") {
+        resultText.innerHTML = "<span class='result-main'>くじがありません</span>";
+      } else {
+        resultText.innerHTML =
+          "<span class='result-main'>＼ " + data.result + " ／</span><br>" +
+          "<span class='result-prize'>" + data.prize + "</span>";
+      }
 
-  // 残り数を判定して結果表示
-  if (data.status === "empty") {
-  // くじそのものが無い場合（GAS側が empty を返す）
-  resultText.innerHTML =
-    "<span class='result-main'>くじがありません</span>";
-  } else {
-  // 残り0になっても構わず当選結果を表示する
-  resultText.innerHTML =
-    "<span class='result-main'>＼ " + data.result + " ／</span>" +
-    "<br>" +
-    "<span class='result-prize'>" + data.prize + "</span>";
-  }
-
-  resultText.style.display = "block";
-
-  // バウンスアニメーション
-  resultText.classList.remove("bounce");
-  void resultText.offsetWidth;
-  resultText.classList.add("bounce");
-}
-
- 
+      resultText.style.display = "block";
+    }
   </script>
 
 </body>
