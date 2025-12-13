@@ -67,21 +67,21 @@
   margin-top: 0;
   display: none;
   text-shadow: 1px 1px #ffd700;
-  animation: popIn 0.6s ease-out;  /* アニメーションを追加 */
+  animation: popOut 0.5s ease-out;  /* アニメーションを追加 */
 }
 
-@keyframes popIn {
+@keyframes popOut {
   0% {
     opacity: 0;
-    transform: translateY(-50px);  /* 初めは画面外から少し上に */
+    transform: scale(0.6);  /* 初めは小さく表示 */
   }
   50% {
     opacity: 1;
-    transform: translateY(10px);  /* 少し下に動かして、ポップ感を出す */
+    transform: scale(1.1);  /* 少し拡大して、弾けるような効果 */
   }
   100% {
     opacity: 1;
-    transform: translateY(0);  /* 最終的に元の位置に */
+    transform: scale(1);  /* 最終的に元のサイズに戻る */
   }
 }
 
